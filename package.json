@@ -13,7 +13,8 @@
     "start:backend": "npm --workspace=backend run start",
     "dev:backend": "npm --workspace=backend run dev",
     "start:bot": "npm --workspace=bot run start",
-    "dev:bot": "npm --workspace=bot run dev"
+    "dev:bot": "npm --workspace=bot run dev",
+    "start:all": "node start-all.js"
   },
   "devDependencies": {
     "typescript": "^5.7.3"
