@@ -1,0 +1,116 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Player {
+  id            String       @id @default(uuid())
+  minecraftUuid String       @unique
+  discordId     String       @unique
+  minecraftName String
+  linkedAt      DateTime     @default(now())
+  isBlacklisted Boolean      @default(false)
+  blacklistReason String?
+
+  tiers         PlayerTier[]
+  queueEntries  QueueEntry[]
+  testsAsPlayer Test[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Gamemode {
+  id          String       @id
+  name        String
+  description String
+  emoji       String
+  enabled     Boolean      @default(true)
+  maxRounds   Int          @default(7)
+
+  playerTiers PlayerTier[]
+  queueEntries QueueEntry[]
+  tests       Test[]
+}
+
+model PlayerTier {
+  id           String    @id @default(uuid())
+  playerId     String
+  gamemodeId   String
+  tier         String    @default("UNRANKED") // LT5..HT1
+  points       Int       @default(0)
+  lastTestedAt DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  player       Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  gamemode     Gamemode  @relation(fields: [gamemodeId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, gamemodeId])
+}
+
+model Tester {
+  id             String    @id @default(uuid())
+  discordId      String    @unique
+  role           String    @default("TESTER") // TESTER, HEAD_TESTER, ADMIN
+  active         Boolean   @default(true)
+  testsCompleted Int       @default(0)
+  addedAt        DateTime  @default(now())
+
+  tests          Test[]
+}
+
+model QueueEntry {
+  id              String    @id @default(uuid())
+  playerId        String
+  gamemodeId      String
+  region          String    @default("NA")
+  status          String    @default("WAITING") // WAITING, TESTING, COMPLETED, CANCELLED
+  ticketChannelId String?
+  testerId        String?
+  joinedAt        DateTime  @default(now())
+
+  player          Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  gamemode        Gamemode  @relation(fields: [gamemodeId], references: [id], onDelete: Cascade)
+}
+
+model Test {
+  id           String    @id @default(uuid())
+  playerId     String
+  testerId     String
+  gamemodeId   String
+  playerScore  Int       @default(0)
+  testerScore  Int       @default(0)
+  testerTier   String    // Tier of tester at time of test
+  oldTier      String    @default("UNRANKED")
+  newTier      String
+  status       String    @default("IN_PROGRESS") // IN_PROGRESS, COMPLETED, VOIDED
+  notes        String?
+  createdAt    DateTime  @default(now())
+  completedAt  DateTime?
+
+  player       Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  tester       Tester    @relation(fields: [testerId], references: [id], onDelete: Cascade)
+  gamemode     Gamemode  @relation(fields: [gamemodeId], references: [id], onDelete: Cascade)
+}
+
+model LinkCode {
+  id            String    @id @default(uuid())
+  code          String    @unique
+  minecraftUuid String
+  minecraftName String
+  expiresAt     DateTime
+  used          Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String
+  action    String
+  targetId  String?
+  details   String?
+  createdAt DateTime @default(now())
+}

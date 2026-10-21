@@ -1,0 +1,32 @@
+name: MCTiers
+version: '1.0.0'
+main: net.mctiers.MCTiersPlugin
+api-version: '1.21'
+author: MCTiers
+description: MCTiers Competitive Testing Paper Plugin
+
+commands:
+  link:
+    description: Generate account link code to connect Discord
+    usage: /link
+    permission: mctiers.link
+  testmatch:
+    description: Start, stop or manage a tier test match
+    usage: /testmatch <start|stop|result>
+    permission: mctiers.tester
+  arena:
+    description: Manage match arenas
+    usage: /arena <create|setspawn1|setspawn2|list>
+    permission: mctiers.admin
+  tierkit:
+    description: Load gamemode kit
+    usage: /tierkit <gamemode>
+    permission: mctiers.tester
+
+permissions:
+  mctiers.link:
+    default: true
+  mctiers.tester:
+    default: op
+  mctiers.admin:
+    default: op

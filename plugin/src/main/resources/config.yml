@@ -1,0 +1,16 @@
+backend:
+  url: "http://localhost:3001/api"
+  api-key: "test_plugin_secret_key"
+  timeout-seconds: 10
+
+match:
+  countdown-seconds: 5
+  auto-kit-equip: true
+  auto-respawn: true
+  lobby-spawn:
+    world: "world"
+    x: 0.5
+    y: 100.0
+    z: 0.5
+    yaw: 0.0
+    pitch: 0.0

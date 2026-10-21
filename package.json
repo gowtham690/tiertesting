@@ -1,0 +1,21 @@
+{
+  "name": "tiertesting-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "backend",
+    "bot"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "start:backend": "npm --workspace=backend run start",
+    "dev:backend": "npm --workspace=backend run dev",
+    "start:bot": "npm --workspace=bot run start",
+    "dev:bot": "npm --workspace=bot run dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

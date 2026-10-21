@@ -1,0 +1,22 @@
+# Node
+node_modules/
+dist/
+
+# Environment files
+.env
+.env.local
+
+# Database
+*.db
+*.db-journal
+
+# Gradle
+.gradle/
+plugin/build/
+!plugin/build/libs/*.jar
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
