@@ -8,7 +8,7 @@
     "bot"
   ],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm --workspace=backend run prisma:generate && npm --workspace=backend run prisma:push && npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "start:backend": "npm --workspace=backend run start",
     "dev:backend": "npm --workspace=backend run dev",
